@@ -23,7 +23,7 @@ def extraction(bank):
         fields = {}
         m = re.findall("CR[ ]*No. [\d—-]+", t)
         if m:
-            fields['Cr No'] = m[0]
+            fields['CrNo'] = m[0]
         m = re.findall("Commercial[ ]*Name[ ]*\(English\)[ ].*", t)
         if m:
             fields['Name'] = m[0]
@@ -39,13 +39,13 @@ def extraction(bank):
                 fields['Status'] = s[0]
             elif 'Expiry Date' in y[i]:
                 s = y[i].split(" ")
-                fields['Registration Date'] = s[0]
+                fields['RegistrationDate'] = s[0]
             elif 'Financial Year' in y[i]:
                 s = y[i].split(" ")
-                fields['Company Period'] = s[0]
+                fields['CompanyPeriod'] = s[0]
             elif validate(y[i]):
                 fields['Nationality'] = y[i - 1]
-                fields['Expiry Date'] = y[i]
+                fields['ExpiryDate'] = y[i]
 
         json_obj = json.dumps(fields)
         return json_obj

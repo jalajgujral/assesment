@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<body>
+
+<div class="container" ng-app="myApp" ng-controller="myCtrl">
+
+    <form ng-submit="myFunc()" ng-show="myVar2">
+        <h3 class="bg-info">Enter the Bank Name</h3>
+  <input type="text" class="form-control" placeholder="Search" name="search" ng-model="bank">
+        <br>
+        <button type="submit" class="btn btn-default">Search</button>
+</form>
+<h2 ng-show="myVar1">{{bank}}</h2>
+<table class="table" ng-show="myVar1">
+    <thead>
+    <tr>
+    <th>Cr-No</th>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Registration Date</th>
+    <th>Company Period</th>
+    <th>Nationality</th>
+    <th>Expiry Date</th>
+    </tr>
+    </thead>
+    <tr class="success">
+        <td>{{ fields.CrNo }}</td>
+        <td>{{ fields.Name }}</td>
+        <td>{{ fields.Status }}</td>
+        <td>{{ fields.RegistrationDate }}</td>
+        <td>{{ fields.CompanyPeriod }}</td>
+        <td>{{ fields.Nationality }}</td>
+        <td>{{ fields.ExpiryDate }}</td>
+    </tr>
+
+</table>
+    <button type="button" class="btn btn-success" ng-click="boolJson()" ng-show="myVar1">Json-Output</button>
+
+<p ng-show="myVar3">{{ fields }}</p>
+    <button type="button" class="btn btn-success" ng-click="boolTable()" ng-show="myVar3">Table-Output</button>
+    <button type="button" class="btn btn-success" ng-click="search()" ng-show="myVar4">Search New</button>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope ,$http) {
+    $scope.api = 'http://0.0.0.0:5001/syncreon/';
+    $scope.myVar2 = true;
+    $scope.myFunc = function(){
+        $scope.fullapi = $scope.api.concat($scope.bank);
+  $http.get($scope.fullapi)
+  .then(function(response) {
+      $scope.fields = response.data;
+      $scope.myVar1 = true;
+      $scope.myVar2 = false;
+      $scope.myVar3 = false;
+      $scope.myVar4 = true;
+  })
+    }
+    $scope.boolJson = function (){
+        $scope.myVar3 = true;
+        $scope.myVar1 = false;
+
+    }
+    $scope.boolTable = function (){
+        $scope.myVar1 = true;
+        $scope.myVar3 = false;
+    }
+    $scope.search = function (){
+        $scope.myVar2 = true;
+        $scope.myVar3 = false;
+        $scope.myVar1 = false;
+        $scope.myVar4 = false;
+    }
+});
+
+</script>
+
+</body>
+</html>
